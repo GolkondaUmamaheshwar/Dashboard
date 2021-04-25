@@ -1,0 +1,50 @@
+/* Enter your custom styles here */
+.equalColumns1 {
+	background-color: #FCBF49;
+	
+}  
+ .equalColumns2 {
+	background-color: #F77F00;
+	
+} 
+ .equalColumns3 {
+	background-color: #D62828;
+	
+} 
+ .equalColumns4 {
+	background-color: #c1d3fe;
+	
+} 
+ .equalColumns5 {
+	background-color: #ffeedd;
+	
+} 
+.equalColumns6 {
+	background-color: #ffd6ff;
+	
+} 
+.equalColumns7 {
+	background-color: #dde5b6;
+	
+} 
+.equalColumns8 {
+	background-color: #e8d1c5;
+	
+} 
+.HeaderTile1 {
+   background-color: #003049;  
+  border-radius: 5px;
+} 
+.HeaderTileText1{
+	 color: #FFFFFF;
+}
+.HeaderTileStatusText1{
+	color: #EAE2B7;
+}
+.Hbold {
+	font-weight: bold;
+}
+.HeaderTile2 {
+	background-color: #49adc1;
+	
+} 

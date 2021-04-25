@@ -1,0 +1,74 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:t="sap.ui.table"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<Dialog id="ADialog" class="sapUiSizeCozy" resizable="true" draggable="true" title="App Error Report" contentHeight="600px"
+		contentWidth="1224px">
+		<ScrollContainer height="100%" width="100%"
+			horizontal="true" vertical="true">
+			<f:SimpleForm minWidth="1024" maxContainerCols="2"
+				layout="ResponsiveGridLayout">
+
+
+				<t:Table id="tblAppTable" class="sapUiSizeCompact" selectionMode="None"
+					editable="false" rows="{oModel>/d/results/}" >
+
+
+					<t:columns>
+						<t:Column width="8rem" tooltip="Sender Component ">
+							<Label text="Sender Component" />
+							<t:template>
+								<Text text="{oModel>/d/results/0/Name}" />
+							</t:template>
+						</t:Column>
+
+						<t:Column width="6rem" tooltip="Sender Interface Namespace "> <Label text="Sender Interface Namespace "/> 
+							<t:template> <Text text="{oModel>/d/results/0/Id}" /> </t:template> </t:Column>
+
+						<t:Column width="6rem" tooltip="Sender Interface Name">
+							<Label text="Sender Interface Name" />
+							<t:template>
+								<Text text="{oModel>/d/results/0/Phone}" />
+							</t:template>
+						</t:Column>
+						
+							<t:Column width="6rem" tooltip="Receiver Component ">
+							<Label text="Receiver Component" />
+							<t:template>
+								<Text text="{oModel>/d/results/0/Email}" />
+							</t:template>
+						</t:Column>
+
+			<t:Column width="6rem" tooltip="Receiver Interface Namespace">
+							<Label text="Receiver Interface Namespace" />
+							<t:template>
+								<Text text="{oModel>/d/Supplier/WebAddress}" />
+							</t:template>
+						</t:Column>
+						<t:Column width="6rem" tooltip="Receiver Interface Name ">
+							<Label text="Receiver Interface Name" />
+							<t:template>
+								<Text text="{oModel>/d/Supplier/FormattedAddress}" />
+							</t:template>
+						</t:Column>
+						<t:Column width="6rem" tooltip="Count"> <Label text="Count" /> <t:template> 
+							<Text text="{oModel>/d/Supplier/ContactPhone1}" /> </t:template> </t:Column>
+
+						
+					</t:columns>
+				</t:Table>
+
+			</f:SimpleForm>
+		</ScrollContainer>
+		<beginButton>
+			<!-- <Button text="OK" press="onSelectTransfer" /> -->
+			<!-- <Button text="OK" press="onSelectTransferUpdate" /> -->
+
+		</beginButton>
+		<endButton>
+			<Button text="Close" press="onCloseAppDialog" />
+		</endButton>
+
+
+	</Dialog>
+</core:FragmentDefinition>
