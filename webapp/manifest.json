@@ -12,14 +12,17 @@
         "resources": "resources.json",
         "ach": "ach",
         "dataSources": {
-            "mainService": {
+              "mainService": {
                 "uri": "/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV",
                 "type": "OData",
                 "settings": {
-                    "odataVersion": "2.0",
-                    "localUri": "localService/metadata.xml"
-                }
-            }
+                  "odataVersion": "2.0",
+                   "localUri": "localService/metadata.xml"
+                
+                   }
+                
+                   
+                    }             
         },
         "crossNavigation": {
             "inbounds": {
@@ -77,13 +80,18 @@
             "i18n": {
                 "type": "sap.ui.model.resource.ResourceModel",
                 "settings": {
-                    "bundleName": "ux.dashboardbas.i18n.i18n"
+                 "bundleName": "ux.dashboardbas.i18n.i18n"
                 }
+                
             },
-            "": {
+            
+             "": {
+                
                 "dataSource": "mainService",
-                "preload": true
+                "preload": true 
+                
             }
+               
         },
         "resources": {
             "css": [

@@ -429,69 +429,48 @@
                                                 </VBox>
              </HBox>
 			</IconTabFilter>
+            <!-- Table Report -->
 			<IconTabFilter text="Report" key="attachments">
-				
-              <Table id="ProductsTable"
-		            inset="false"
-                        items="{/Products}">
-                        	<headerToolbar>
+
+           <Table id="idProductsTable"
+		inset="false"
+		items="{/Products}">
+		
+		<headerToolbar>
 			<OverflowToolbar>
-				<content>
-					<Title text="Products" level="H2"/>
-					<ToolbarSpacer />
-					<ComboBox id="idPopinLayout"
-						placeholder="Popin layout options"
-						change="onPopinLayoutChanged">
-						<items>
-							<core:Item  text="Block"
-								key="Block"/>
-							<core:Item  text="Grid Large"
-								key="GridLarge"/>
-							<core:Item  text="Grid Small"
-								key="GridSmall"/>
-						</items>
-					</ComboBox>
-					<Label text="Sticky options:" />
-					<CheckBox text="ColumnHeaders"
-						select="onSelect"/>
-					<CheckBox text="HeaderToolbar"
-						select="onSelect"/>
-					<CheckBox text="InfoToolbar"
-						select="onSelect"/>
-					<ToggleButton id="toggleInfoToolbar"
-						text="Hide/Show InfoToolbar"
-						press="onToggleInfoToolbar" />
-				</content>
+				<Title text="Products" level="H2"/>
+				<ToolbarSpacer></ToolbarSpacer>
+				<Button	icon="sap-icon://download" press="onDataExport" />
 			</OverflowToolbar>
 		</headerToolbar>
-                        <infoToolbar>
-			<OverflowToolbar>
-				<Label text="Wide range of available products"/>
-			</OverflowToolbar>
-		</infoToolbar>
 		<columns>
 			<Column
+				id="productCol"
 				width="12em">
 				<Text text="Product" />
 			</Column>
 			<Column
+				id="supplierCol"
 				minScreenWidth="Tablet"
 				demandPopin="true">
 				<Text text="Supplier" />
 			</Column>
 			<Column
-				minScreenWidth="Desktop"
+				id="dimensionsCol"
+				minScreenWidth="Tablet"
 				demandPopin="true"
 				hAlign="End">
 				<Text text="Dimensions" />
 			</Column>
 			<Column
-				minScreenWidth="Desktop"
+				id="weightCol"
+				minScreenWidth="Tablet"
 				demandPopin="true"
 				hAlign="Center">
 				<Text text="Weight" />
 			</Column>
 			<Column
+				id="priceCol"
 				hAlign="End">
 				<Text text="Price" />
 			</Column>
@@ -500,24 +479,18 @@
 			<ColumnListItem>
 				<cells>
 					<ObjectIdentifier
-						title="{Id}"
-						text="{SubCategoryId}"/>
+						title="{Name}"
+						text="{Id}" />
 					<Text
 						text="{SupplierName}" />
 					<Text
 						text="{DimensionWidth} x {DimensionDepth} x {DimensionHeight} {DimensionUnit}" />
-
 					<ObjectNumber
 						number="{WeightMeasure}"
-						unit="{'WeightUnit',
-						
-						formatter:'ux.dashboardbas.util.formatter.Measure'
-                    
-						}"
-						state="{path:'WeightUnit',
-						
-						formatter:'ux.dashboardbas.util.formatter.MeasureState'
-                        
+						unit="{WeightUnit}"
+						state="{
+							path: 'WeightMeasure',
+							formatter: 'ux.dashboardbas.util.formatter.weightState'
 						}" />
 					<ObjectNumber
 							number="{
@@ -529,8 +502,10 @@
 				</cells>
 			</ColumnListItem>
 		</items>
-                 </Table>
-
+	</Table>
+    <!-- End of Report -->
+				
+              
 			</IconTabFilter>
 			<IconTabFilter text="Analytics" key="notes">
 				<Panel  xmlns="sap.m" width="auto" expandable="true"  expanded="true" id="panel2" headerText="Bar Chart"> 

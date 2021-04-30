@@ -1,26 +1,30 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
-     "sap/m/library",
      "ux/dashboardbas/util/formatter",
-     "sap/ui/model/odata/v2/ODataModel"
+     "sap/ui/model/odata/v2/ODataModel",
+     "sap/ui/core/util/ExportTypeCSV",
+     "sap/ui/core/util/Export",
+     "sap/m/MessageBox"
+     
     
 ],
 	/**
 	 * @param {typeof sap.ui.core.mvc.Controller} Controller
 	 */
-	function (Controller, mobilelibrary, JSONModel, formatter, ODataModel ) {
+	function (Controller, JSONModel, formatter, ODataModel, ExportTypeCSV, Export,MessageBox ) {
         "use strict";
-        var PopinLayout = mobilelibrary.PopinLayout;
+        
      
 		return Controller.extend("ux.dashboardbas.controller.main", {
             formatter:formatter,
              
              
 			onInit: function () {
-                
-         
-        var oVizFrame = this.getView().byId("idVizFrame2");
+                this.report();
+               
+            
+      var oVizFrame = this.getView().byId("idVizFrame2");
 	 var oModel = new sap.ui.model.json.JSONModel();
    var data = {
 		   'Count' : [
@@ -92,20 +96,22 @@ this._setIceCreamModel();
 
 //End of Pie Chart
 
-                //   var that=this;
-				//    var sServiceUrl = "/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/";
-	
-				//       var oModel = new ODataModel(sServiceUrl);
-				// //      // @ts-ignore
-                //   this.getView().setModel(oModel);
-                  
+                   var that=this;
+                    var sServiceUrl = "/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products";
+                var oModel = new sap.ui.model.odata.v2.ODataModel(sServiceUrl);
+                 oModel.setUseBatch(false);
+				      // @ts-ignore
+                  this.getView().setModel(oModel);
+                  //this.getView().byId("idProductsTable").setModel(oModel);
+
+
 			// crm model
-				  var oCRMModel =  new sap.ui.model.json.JSONModel("/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products('AR-FB-1001')?$format=json");
+				  var oCRMModel =  new sap.ui.model.json.JSONModel("/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products('1607038')?$format=json");
 				  // @ts-ignore
 				  this.getView().byId("crmcontainer").setModel(oCRMModel,"CRM");
 
 				  // workday model
-				  var oWDModel =  new sap.ui.model.json.JSONModel("/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products('AR-FB-1011')?$format=json");
+				  var oWDModel =  new sap.ui.model.json.JSONModel("/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products('HT-1000')?$format=json");
 				  // @ts-ignore
 				  this.getView().byId("wdcontainer").setModel(oWDModel,"WD");
 				  
@@ -113,12 +119,12 @@ this._setIceCreamModel();
 
 			onAfterRendering:function(){
 				// ecc model
-				var oECCModel =  new sap.ui.model.json.JSONModel("/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products('AR-FB-1005')?$format=json");
+				var oECCModel =  new sap.ui.model.json.JSONModel("/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products('HT-1001')?$format=json");
 				// @ts-ignore
 				this.getView().byId("ecccontainer").setModel(oECCModel,"ECC");
 
 				// successfactors model
-				var oSFCModel =  new sap.ui.model.json.JSONModel("/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products('AR-T-1005')?$format=json");
+				var oSFCModel =  new sap.ui.model.json.JSONModel("/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/Products('2012663')?$format=json");
 				// @ts-ignore
 				this.getView().byId("sapsfcontainer").setModel(oSFCModel,"SFC");
 			},
@@ -209,58 +215,84 @@ this._setIceCreamModel();
 				this.getView().byId("chartContainer").setModel(oIceCreamModel, "IceCreamModel");
     },
     
-    onReport: function(){
-       var serviceurl="/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/";
-        var oModel= new ODataModel(serviceurl);
-         this.getView().byId("items").setModel(oModel);
+       report:function(){
+ 
+           var serviceurl="/sap/opu/odata/sap/EPM_REF_APPS_SHOP_SRV/";
+            var oModel= new ODataModel(serviceurl);
+            this.getView().byId("idProductsTable").setModel(oModel);
 		},
-    
+           
+      
+               
+            onDataExport : function(oEvent) {
 
- onPopinLayoutChanged: function() {
-			var oTable = this.byId("ProductsTable");
-			var oComboBox = this.byId("idPopinLayout");
-			var sPopinLayout = oComboBox.getSelectedKey();
-			switch (sPopinLayout) {
-				case "Block":
-					oTable.setPopinLayout(PopinLayout.Block);
-					break;
-				case "GridLarge":
-					oTable.setPopinLayout(PopinLayout.GridLarge);
-					break;
-				case "GridSmall":
-					oTable.setPopinLayout(PopinLayout.GridSmall);
-					break;
-				default:
-					oTable.setPopinLayout(PopinLayout.Block);
-					break;
-			}
-        },
-        
-		onSelect: function(oEvent) {
-			var bSelected = oEvent.getParameter("selected"),
-				sText = oEvent.getSource().getText(),
-				oTable = this.byId("ProductsTable"),
-				aSticky = oTable.getSticky() || [];
+			var oExport = new Export({
 
-			if (bSelected) {
-				aSticky.push(sText);
-			} else if (aSticky.length) {
-				var iElementIndex = aSticky.indexOf(sText);
-				aSticky.splice(iElementIndex, 1);
-			}
+				// Type that will be used to generate the content. Own ExportType's can be created to support other formats
+				exportType : new ExportTypeCSV({
+					separatorChar : ";"
+				}),
 
-			oTable.setSticky(aSticky);
-		},
+				// Pass in the model created above
+                models : this.getView().getModel(),
+                rows : {
+					path : "/Products"
+				},
 
-		onToggleInfoToolbar: function(oEvent) {
-			var oTable = this.byId("ProductsTable");
-			oTable.getInfoToolbar().setVisible(!oEvent.getParameter("pressed"));
+				// column definitions with column name and binding info for the content
+
+				columns : [{
+					name : "Product",
+					template : {
+						content : "{Name}"
+					}
+				}, {
+					name : "Product ID",
+					template : {
+						content : "{Id}"
+					}
+				}, {
+					name : "Supplier",
+					template : {
+						content : "{SupplierName}"
+					}
+				}, {
+					name : "Dimensions",
+					template : {
+						content : {
+							parts : ["DimensionWidth", "DimensionDepth", "DimensionHeight", "DimensionUnit"],
+							formatter : function(Dimensionwidth, Dimensiondepth, Dimensionheight, DimensionUnit) {
+								return Dimensionwidth + " x " + Dimensiondepth + " x " + Dimensionheight + " " + DimensionUnit;
+							},
+							state : "Warning"
+						}
+					// "{DimensionWidth} x {DimensionDepth} x {DimensionHeight} {DimensionDimUnit}"
+					}
+				}, {
+					name : "Weight",
+					template : {
+						content : "{WeightMeasure} {WeightUnit}"
+					}
+				}, {
+					name : "Price",
+					template : {
+						content : "{Price} {CurrencyCode}"
+					}
+				}]
+			});
+
+			// download exported file
+			oExport.saveFile().catch(function(oError) {
+				MessageBox.error("Error when downloading data. Browser might not be supported!\n\n" + oError);
+			}).then(function() {
+				oExport.destroy();
+            });
         }
+         
         
+       
+  });
+  });
+  
+  
 
-
-
-
-     
-		});
-	});
